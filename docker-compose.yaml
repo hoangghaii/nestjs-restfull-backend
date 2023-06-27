@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  dev-database:
+    image: postgres:15.0
+    ports:
+      - 5434:5432 # {port in host(myPC)}:{port in container}
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgress
+      POSTGRES_DB: testdb
+    networks:
+      - nestjs-network
+networks:
+  nestjs-network:
+
+
+# Create container, network, ... from "docker-compose" file:
+# -d: daemon/background node
+# docker-compose up -d
+
+# If you want to start only specific services/container:
+# docker-compose up -d dev-database -d
