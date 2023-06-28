@@ -12,20 +12,29 @@ datasource db {
 
 model User {
   id             String   @id @default(uuid())
-  email          String
+  email          String   @unique
   hashedPassword String
-  firstName      String
-  lastName       String
+  firstName      String?  @default("")
+  lastName       String?  @default("")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  notes Note[]
+
+  @@map("users") // users id "table's name" in Postgres SQL
 }
 
 model Note {
-  id          String @id @default(uuid())
+  id          String   @id @default(uuid())
   title       String
-  description String
+  description String?  @default("")
   url         String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  // relation to User
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notes") // notes id "table's name" in Postgres SQL
 }

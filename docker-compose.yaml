@@ -2,11 +2,24 @@ version: '3.8'
 services:
   dev-database:
     image: postgres:15.0
+    container_name: dev-database
     ports:
       - 5434:5432 # {port in host(myPC)}:{port in container}
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgress
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: testdb
+    networks:
+      - nestjs-network
+  # Create another container for "TEST"
+  test-database:
+    image: postgres:15.0
+    container_name: test-database
+    ports:
+      - 5435:5432 # {port in host(myPC)}:{port in container}
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: testdb
     networks:
       - nestjs-network
@@ -16,7 +29,10 @@ networks:
 
 # Create container, network, ... from "docker-compose" file:
 # -d: daemon/background node
-# docker-compose up -d
+# docker compose up -d
 
 # If you want to start only specific services/container:
-# docker-compose up -d dev-database -d
+# docker compose up -d [database-name] -d
+
+# How to remove container, volumes, ...:
+# docker compose rm [database-name] --stop --force --volumes
